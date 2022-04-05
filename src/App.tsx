@@ -9,11 +9,6 @@ import React from "react";
  * React.ReactChild[];
  */
 
-/**
- * NOTE: React.ReactElement vs ReactNode
- *
- */
-
 type BoxProps = { children: React.ReactNode; style?: React.CSSProperties };
 
 const Box = ({ children, style = {} }: BoxProps) => {
