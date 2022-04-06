@@ -1,25 +1,45 @@
-import React from "react";
-import { CharacterInformation } from "./CharacterInformation";
-import { CharacterType, fetchCharacter } from "./characters";
+import React, { ChangeEvent, FC, useState } from "react";
 
-const App = () => {
-  // NOTE: use of generic to assert value returned from React.useState
-  // this is a use case of data-fetching and having an initial state
-  const [character, setCharacter] = React.useState<CharacterType | null>(null);
+const Counter: FC = () => {
+  const [count, setCount] = useState(0);
 
-  React.useEffect(() => {
-    fetchCharacter().then((c) => setCharacter(c));
-  }, []);
+  const inc = (count: number) => count + 1;
+  const dec = (count: number) => count - 1;
+
+  // NOTE: we need to specify the kind of context in which this function
+  // will be called
+  const changeCount = (event: ChangeEvent<HTMLInputElement>) => {
+    setCount(+event.target.value);
+  };
 
   return (
-    <main>
-      {character ? (
-        <CharacterInformation character={character} />
-      ) : (
-        <p>no character</p>
-      )}
+    <main className="Counter">
+      <h1>Days Since Last Incident</h1>
+      <p className="count">{count}</p>
+      <section className="controls">
+        <button onClick={() => setCount(inc)}>Increment</button>
+        <button onClick={() => setCount(0)}>Reset</button>
+        <button onClick={() => setCount(dec)}>Decrement</button>
+      </section>
+      <section className="controls">
+        <form onSubmit={() => {}}>
+          <label htmlFor="set-to">Set Count</label>
+          <input id="set-to" type="number" onChange={changeCount} />
+          {/* here TS is aware that the function will receive event : HTMLInputElement  */}
+          <input
+            id="set-to"
+            type="number"
+            onChange={(event) => {
+              setCount(+event.target.value);
+            }}
+          />
+          <input type="submit" />
+        </form>
+      </section>
     </main>
   );
 };
 
-export default App;
+const Application: FC = () => <Counter />;
+
+export default Application;
