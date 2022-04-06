@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer } from "react";
 
 type PizzaData = {
   numberOfPeople: number;
@@ -6,12 +6,13 @@ type PizzaData = {
   slicesPerPie: number;
 };
 
+// NOTE: intersection
 type PizzaState = PizzaData & { pizzasNeeded: number };
 
 const calculatePizzasNeeded = ({
   numberOfPeople,
   slicesPerPerson,
-  slicesPerPie
+  slicesPerPie,
 }: PizzaData): number => {
   return Math.ceil((numberOfPeople * slicesPerPerson) / slicesPerPie);
 };
@@ -24,28 +25,28 @@ const initialState: PizzaState = {
   numberOfPeople: 8,
   slicesPerPerson: 2,
   slicesPerPie: 8,
-  pizzasNeeded: 2
+  pizzasNeeded: 2,
 };
 
-const reducer = (state: any, action: any) => {
-  if (action.type === 'UPDATE_NUMBER_OF_PEOPLE') {
+const reducer = (state: PizzaState, action: any) => {
+  if (action.type === "UPDATE_NUMBER_OF_PEOPLE") {
     return addPizzasNeededToPizzaData({
       ...state,
-      numberOfPeople: action.payload
+      numberOfPeople: action.payload,
     });
   }
 
-  if (action.type === 'UPDATE_SLICES_PER_PERSON') {
+  if (action.type === "UPDATE_SLICES_PER_PERSON") {
     return addPizzasNeededToPizzaData({
       ...state,
-      slicesPerPerson: action.payload
+      slicesPerPerson: action.payload,
     });
   }
 
-  if (action.type === 'UPDATE_SLICES_PER_PIE') {
+  if (action.type === "UPDATE_SLICES_PER_PIE") {
     return addPizzasNeededToPizzaData({
       ...state,
-      slicesPerPie: action.payload
+      slicesPerPie: action.payload,
     });
   }
 
@@ -61,7 +62,13 @@ const Calculation = ({ count }: { count: any }) => {
   );
 };
 
-const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
+const Calculator = ({
+  dispatch,
+  state,
+}: {
+  state: PizzaState;
+  dispatch: any;
+}) => {
   return (
     <form onSubmit={() => {}}>
       <label htmlFor="number-of-people">Number of People</label>
@@ -71,8 +78,8 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         value={state.numberOfPeople}
         onChange={(event) =>
           dispatch({
-            type: 'UPDATE_NUMBER_OF_PEOPLE',
-            payload: event.target.value
+            type: "UPDATE_NUMBER_OF_PEOPLE",
+            payload: event.target.value,
           })
         }
       />
@@ -83,8 +90,8 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         value={state.slicesPerPerson}
         onChange={(event) =>
           dispatch({
-            type: 'UPDATE_SLICES_PER_PERSON',
-            payload: event.target.value
+            type: "UPDATE_SLICES_PER_PERSON",
+            payload: event.target.value,
           })
         }
       />
@@ -95,8 +102,8 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         value={state.slicesPerPie}
         onChange={(event) =>
           dispatch({
-            type: 'UPDATE_SLICES_PER_PIE',
-            payload: event.target.value
+            type: "UPDATE_SLICES_PER_PIE",
+            payload: event.target.value,
           })
         }
       />
@@ -105,6 +112,8 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
 };
 
 const Application = () => {
+  // NOTE: by typing state in reducer, inferred state of `state` is pizzaState
+  // due to duck-typing we can declare initialState inline (structural typing)
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
