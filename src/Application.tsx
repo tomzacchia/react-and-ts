@@ -28,7 +28,16 @@ const initialState: PizzaState = {
   pizzasNeeded: 2,
 };
 
-const reducer = (state: PizzaState, action: any) => {
+// NOTE: typing reducer actions
+type PizzaActions = {
+  type:
+    | "UPDATE_NUMBER_OF_PEOPLE"
+    | "UPDATE_SLICES_PER_PERSON"
+    | "UPDATE_SLICES_PER_PIE";
+  payload: number;
+};
+
+const reducer = (state: PizzaState, action: PizzaActions) => {
   if (action.type === "UPDATE_NUMBER_OF_PEOPLE") {
     return addPizzasNeededToPizzaData({
       ...state,
@@ -67,7 +76,9 @@ const Calculator = ({
   state,
 }: {
   state: PizzaState;
-  dispatch: any;
+  // NOTE: Hovering over dispatch on line:126 will tell us the type of dispatch
+  // which we can use for typing dispatch prop
+  dispatch: React.Dispatch<PizzaActions>;
 }) => {
   return (
     <form onSubmit={() => {}}>
@@ -79,7 +90,7 @@ const Calculator = ({
         onChange={(event) =>
           dispatch({
             type: "UPDATE_NUMBER_OF_PEOPLE",
-            payload: event.target.value,
+            payload: +event.target.value,
           })
         }
       />
@@ -91,7 +102,7 @@ const Calculator = ({
         onChange={(event) =>
           dispatch({
             type: "UPDATE_SLICES_PER_PERSON",
-            payload: event.target.value,
+            payload: +event.target.value,
           })
         }
       />
@@ -103,7 +114,7 @@ const Calculator = ({
         onChange={(event) =>
           dispatch({
             type: "UPDATE_SLICES_PER_PIE",
-            payload: event.target.value,
+            payload: +event.target.value,
           })
         }
       />
@@ -112,8 +123,6 @@ const Calculator = ({
 };
 
 const Application = () => {
-  // NOTE: by typing state in reducer, inferred state of `state` is pizzaState
-  // due to duck-typing we can declare initialState inline (structural typing)
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
