@@ -5,6 +5,8 @@ type FormProps = {
   onSubmit: (n: number) => void;
 };
 
+type SubmitHandler = (event: React.SyntheticEvent) => void;
+
 const Form = ({ onSubmit }: FormProps) => {
   const [value, setValue] = React.useState(1);
 
@@ -12,12 +14,19 @@ const Form = ({ onSubmit }: FormProps) => {
     setValue(+event.target.value);
   };
 
+  const submitHandler: SubmitHandler = (event) => {
+    event.preventDefault();
+    console.log("submitHandler");
+    onSubmit(value);
+  };
+
   return (
     <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmit(value);
-      }}
+      onSubmit={submitHandler}
+      // onSubmit={(event) => {
+      //   event.preventDefault();
+      //   onSubmit(value);
+      // }}
     >
       <div className="fact-input">
         <label htmlFor="number-of-facts">Number of Dog Facts</label>
