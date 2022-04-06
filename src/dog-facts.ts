@@ -1,5 +1,5 @@
-import shuffle from 'lodash.shuffle';
-import { data } from './data';
+import { shuffle } from "lodash";
+import { data } from "./data";
 
 export type DogFactType = {
   id: number;
