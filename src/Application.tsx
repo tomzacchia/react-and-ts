@@ -6,10 +6,16 @@ type CounterState = {
 
 const initialState: CounterState = { value: 0 };
 
-type CounterAction = {
-  type: "INCREMENT" | "DECREMEMT" | "RESET";
-  payload?: number;
+type BasicCounterAction = {
+  type: "INCREMENT" | "DECREMEMT";
 };
+
+type SetCounterAction = {
+  type: "RESET";
+  payload: number;
+};
+
+type CounterAction = BasicCounterAction | SetCounterAction;
 
 function reducer(state: CounterState, action: CounterAction) {
   if (action.type === "INCREMENT") {
@@ -21,9 +27,7 @@ function reducer(state: CounterState, action: CounterAction) {
   }
 
   if (action.type === "RESET") {
-    // since payload is optional it is possible for action.payload === undefined
-    // as such we need to provide a default value since value: number
-    return { value: action.payload || 0 };
+    return { value: action.payload };
   }
 
   return { ...state };
