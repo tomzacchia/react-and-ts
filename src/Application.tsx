@@ -36,13 +36,15 @@ const Counter = () => {
     dispatch({ type: "INCREMENT" });
   };
 
+  const reset = () => dispatch({ type: "RESET", payload: 5 });
+
   return (
     <main className="Counter">
       <h1>Days Since Last Incident</h1>
       <p className="count">{state.value}</p>
       <section className="controls">
         <button onClick={increment}>Increment</button>
-        <button onClick={() => dispatch({ type: "RESET" })}>Reset</button>
+        <button onClick={reset}>Reset</button>
         <button onClick={() => dispatch({ type: "DECREMEMT" })}>
           Decrement
         </button>
